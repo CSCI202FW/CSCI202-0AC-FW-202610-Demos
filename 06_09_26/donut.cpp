@@ -83,9 +83,28 @@ Donut::Donut(std::string icing, std::string topping, std::string drizzle)
     setDrizzle(drizzle);
 }
 
+//getters 
+icingType Donut::getIcing() const {
+    return icing;
+}
+
+Donut::toppingType Donut::getTopping() const {
+    return topping;
+}
+
+drizzleType  Donut::getDrizzle() const {
+    return drizzle;
+}
+
+//setters
+
 void Donut::setIcing(std::string icing)
 {
-    this->icing = NOICE;
+    if (!strToice.count(toLower(icing))) {
+        throw std::invalid_argument(icing + " is not a valid icing");
+    }
+
+    this->icing = strToice.at(toLower(icing));
 }
 
 void Donut::setTopping(std::string topping)
@@ -101,8 +120,13 @@ void Donut::setTopping(std::string topping)
 
 void Donut::setDrizzle(std::string drizzle)
 {
-    this->drizzle = drizzleType::NODRIZZLE;
+    if (!strToDrizzle.count(toLower(drizzle))) {
+        throw std::invalid_argument(drizzle + " is not a valid drizzle");
+    }
+    
+    this->drizzle = strToDrizzle.at(toLower(drizzle));
 }
+
 
 std::string Donut::toString() const
 {
