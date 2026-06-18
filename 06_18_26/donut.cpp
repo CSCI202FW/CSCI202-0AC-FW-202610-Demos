@@ -7,29 +7,29 @@
     drizzle = drizzleType::NODRIZZLE;
 } */
 
-donut::donut(std::string icing, std::string topping, std::string drizzle)
+Donut::Donut(std::string icing, std::string topping, std::string drizzle)
 {
     setIcing(icing);
     setDrizzle(drizzle);
     setTopping(topping);
 }
 
-icingType donut::getIcing() const
+icingType Donut::getIcing() const
 {
     return icing;
 }
 
-drizzleType donut::getDrizzle() const
+drizzleType Donut::getDrizzle() const
 {
     return drizzle;
 }
 
-donut::toppingType donut::getTopping() const
+Donut::toppingType Donut::getTopping() const
 {
     return topping;
 }
 
-void donut::setIcing(std::string ice)
+void Donut::setIcing(std::string ice)
 {
     std::transform(ice.begin(), ice.end(), ice.begin(), ::tolower);
     if (!strToIce.count(ice))
@@ -39,7 +39,7 @@ void donut::setIcing(std::string ice)
     icing = strToIce.at(ice);
 }
 
-void donut::setTopping(std::string top)
+void Donut::setTopping(std::string top)
 {
     std::transform(top.begin(), top.end(), top.begin(), ::tolower);
     if (!strToTop.count(top))
@@ -49,7 +49,7 @@ void donut::setTopping(std::string top)
     topping = strToTop.at(top);
 }
 
-void donut::setDrizzle(std::string driz)
+void Donut::setDrizzle(std::string driz)
 {
     std::transform(driz.begin(), driz.end(), driz.begin(), ::tolower);
     if (!strToDrizzle.count(driz))
@@ -59,34 +59,34 @@ void donut::setDrizzle(std::string driz)
     this->drizzle = strToDrizzle.at(driz);
 }
 
-std::string donut::toString() const
+std::string Donut::toString() const
 {
     std::string out;
     out = "Icing: " + iceToStr.at(icing) + " Topping: " + topToStr.at(topping) + " Drizzle: " + drizzleToStr.at(drizzle);
     return out;
 }
 
-std::ostream &operator<<(std::ostream &out, const donut &d)
+std::ostream &operator<<(std::ostream &out, const Donut &d)
 {
     out << d.toString();
     return out;
 }
 
-const std::map<icingType, std::string> donut::iceToStr = {{CHOCOLATEICING, "Chocolate"},
+const std::map<icingType, std::string> Donut::iceToStr = {{CHOCOLATEICING, "Chocolate"},
                                                           {CARAMELICING, "Caramel"},
                                                           {MAPLE, "Maple"},
                                                           {VANILLA, "Vanilla"},
                                                           {GLAZE, "Glaze"},
                                                           {SPECIALICE, "Special"},
                                                           {NOICE, "None"}};
-const std::map<std::string, icingType> donut::strToIce = {{"chocolate", CHOCOLATEICING},
+const std::map<std::string, icingType> Donut::strToIce = {{"chocolate", CHOCOLATEICING},
                                                           {"caramel", CARAMELICING},
                                                           {"maple", MAPLE},
                                                           {"vanilla", VANILLA},
                                                           {"glaze", GLAZE},
                                                           {"special", SPECIALICE},
                                                           {"none", NOICE}};
-const std::map<donut::toppingType, std::string> donut::topToStr =
+const std::map<Donut::toppingType, std::string> Donut::topToStr =
     {{RAINBOWSPR, "Rainbow Sprinkles"},
      {CHOCOLATESPR, "Chocolate Sprinkles"},
      {PEANUTS, "Peanuts"},
@@ -104,7 +104,7 @@ const std::map<donut::toppingType, std::string> donut::topToStr =
      {POWDSUGAR, "Powdered Sugar"},
      {NOTOP, "None"}};
 
-const std::map<std::string, donut::toppingType> donut::strToTop =
+const std::map<std::string, Donut::toppingType> Donut::strToTop =
     {
         {"rainbow sprinkles", RAINBOWSPR},
         {"chocolate sprinkles", CHOCOLATESPR},
@@ -122,7 +122,7 @@ const std::map<std::string, donut::toppingType> donut::strToTop =
         {"cinnamon sugar", CINSUGAR},
         {"powdered sugar", POWDSUGAR},
         {"none", NOTOP}};
-const std::map<drizzleType, std::string> donut::drizzleToStr =
+const std::map<drizzleType, std::string> Donut::drizzleToStr =
     {{drizzleType::CARAMELDRIZZLE, "Caramel"},
      {drizzleType::CHOCOLATEDRIZZLE, "Chocolate"},
      {drizzleType::PEANUTBUTTER, "Peanut Butter"},
@@ -130,7 +130,7 @@ const std::map<drizzleType, std::string> donut::drizzleToStr =
      {drizzleType::SPECIALDRIZZLE, "Special"},
      {drizzleType::NODRIZZLE, "None"}};
 
-const std::map<std::string, drizzleType> donut::strToDrizzle =
+const std::map<std::string, drizzleType> Donut::strToDrizzle =
     {{"caramel", drizzleType::CARAMELDRIZZLE},
      {"chocolate", drizzleType::CHOCOLATEDRIZZLE},
      {"peanut butter", drizzleType::PEANUTBUTTER},
@@ -138,11 +138,11 @@ const std::map<std::string, drizzleType> donut::strToDrizzle =
      {"special", drizzleType::SPECIALDRIZZLE},
      {"none", drizzleType::NODRIZZLE}};
 
-bool donut::operator==(const donut &otherDonut)
+bool Donut::operator==(const Donut &otherDonut)
 {
     return this->icing == otherDonut.icing && this->topping == otherDonut.topping && this->drizzle == otherDonut.drizzle;
 }
-bool donut::operator!=(const donut &otherDonut)
+bool Donut::operator!=(const Donut &otherDonut)
 {
     return !(*this == otherDonut);
 }

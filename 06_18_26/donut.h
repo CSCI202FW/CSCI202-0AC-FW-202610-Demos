@@ -27,7 +27,7 @@ enum class drizzleType
     NODRIZZLE
 };
 
-class donut
+class Donut
 {
 public:
     enum toppingType
@@ -50,7 +50,7 @@ public:
         NOTOP
     };
     // donut();
-    donut(std::string icing, std::string topping, std::string drizzle);
+    Donut(std::string icing, std::string topping, std::string drizzle);
     icingType getIcing() const;
     drizzleType getDrizzle() const;
     toppingType getTopping() const;
@@ -58,15 +58,15 @@ public:
     void setTopping(std::string);
     void setDrizzle(std::string);
     std::string toString() const;
-    friend std::ostream &operator<<(std::ostream &, const donut &);
+    friend std::ostream &operator<<(std::ostream &, const Donut &);
     const static std::map<icingType, std::string> iceToStr;
     const static std::map<std::string, icingType> strToIce;
     const static std::map<drizzleType, std::string> drizzleToStr;
     const static std::map<std::string, drizzleType> strToDrizzle;
     const static std::map<toppingType, std::string> topToStr;
     const static std::map<std::string, toppingType> strToTop;
-    bool operator==(const donut &otherDonut);
-    bool operator!=(const donut &otherDonut);
+    bool operator==(const Donut &otherDonut);
+    bool operator!=(const Donut &otherDonut);
 
 private:
     icingType icing;
