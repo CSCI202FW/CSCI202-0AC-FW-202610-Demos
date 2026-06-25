@@ -1,27 +1,204 @@
-#include "linkedQueue.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cctype>
+#include <algorithm>
+#include <iomanip>
+#include <limits>
+#include "process.h"
 #include "arrayQueue.h"
-#include <random>
+#include "linkedQueue.h"
+#include "unorderedLinkedList.h"
+
+void printMenu();
+void processFile(LinkedQueue<Process> &ready, ArrayQueue<Process> &waiting, int &processCount);
+int getMenuChoice();
+void resetStream();
+void processChoice(int choice, LinkedQueue<Process> &, ArrayQueue<Process> &, UnorderedLinkedList<Process> &);
+void runNextProcess(LinkedQueue<Process> &ready, ArrayQueue<Process> &waiting, UnorderedLinkedList<Process> &finished);
+void interrupt(LinkedQueue<Process> &ready, ArrayQueue<Process> &waiting);
+void listProcesses(LinkedQueue<Process> &, ArrayQueue<Process> &, UnorderedLinkedList<Process> &);
 
 int main()
 {
-    LinkedQueue<int> q1;
-    LinkedQueue<int> q2;
-    ArrayQueue<int> q3;
-    ArrayQueue<int> q4(10);
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> dist(1, 200);
+    UnorderedLinkedList<Process> finished;
+    LinkedQueue<Process> ready;
+    ArrayQueue<Process> waiting;
+    int processCount = 0;
+    processFile(ready, waiting, processCount);
+    // int i = 1;
+    std::cout << std::setfill('-');
+    int choice = 0;
+    while (choice != 4)
+    {
 
-    for (int i = 0; i < 80; i++)
-    {
-        q1.enqueue(dist(generator));
-        q3.enqueue(dist(generator));
-    }
-    q2 = q1;
-    q4 = q3;
-    for (int i = 0; i < 30; i++)
-    {
-        std::cout << q1.dequeue() << "\t\t" << q3.dequeue() << std::endl;
+        if (processCount == finished.length())
+        {
+            choice = 4;
+            std::cout << "All processes have finished. Shutting Down." << std::endl;
+        }
+        else
+        {
+            choice = getMenuChoice();
+        }
+        processChoice(choice, ready, waiting, finished);
     }
 
     return 0;
+}
+
+void printMenu()
+{
+    std::cout << "Please choose from the following menu: " << std::endl;
+    std::cout << "1. Run Next Process" << std::endl;
+    std::cout << "2. Trigger an Interrupt" << std::endl;
+    std::cout << "3. List All Processes" << std::endl;
+    std::cout << "4. Shut Down" << std::endl;
+    std::cout << "Your Choice: ";
+}
+
+void processFile(LinkedQueue<Process> &ready, ArrayQueue<Process> &waiting, int &processCount)
+{
+    std::ifstream in;
+    in.open("processes.txt");
+    processCount = 0;
+    while (!in.eof() && in.is_open())
+    {
+        std::string name;
+        int priority;
+        int slicesNeeded;
+        int IOSlice;
+        std::string statusStr;
+        in >> name >> priority >> slicesNeeded >> IOSlice >> statusStr;
+        if (!in)
+        {
+            break;
+        }
+        std::transform(statusStr.begin(), statusStr.end(), statusStr.begin(), ::tolower);
+        Process p(name, priority, slicesNeeded, IOSlice, strToStatus.at(statusStr));
+        processCount++;
+        if (p.getStatus() == WAITING)
+        {
+            waiting.enqueue(p);
+        }
+        else
+        {
+            ready.enqueue(p);
+        }
+    }
+}
+
+int getMenuChoice()
+{
+    int choice;
+    std::cout << std::endl;
+    printMenu();
+    std::cin >> choice;
+    while (!std::cin || choice < 1 || choice > 4)
+    {
+        if (!std::cin)
+        {
+            resetStream();
+        }
+        std::cout << "That is not a valid choice." << std::endl;
+        printMenu();
+        std::cin >> choice;
+    }
+    return choice;
+}
+
+void processChoice(int choice, LinkedQueue<Process> &ready, ArrayQueue<Process> &waiting, UnorderedLinkedList<Process> &finished)
+{
+    switch (choice)
+    {
+    case 1:
+
+        runNextProcess(ready, waiting, finished);
+
+        break;
+
+    case 2:
+        interrupt(ready, waiting);
+        break;
+    case 3:
+        listProcesses(ready, waiting, finished);
+        break;
+    case 4:
+        std::cout << "Shuttng Down:" << std::endl;
+        listProcesses(ready, waiting, finished);
+        break;
+    }
+}
+
+void runNextProcess(LinkedQueue<Process> &ready, ArrayQueue<Process> &waiting, UnorderedLinkedList<Process> &finished)
+{
+    try
+    {
+
+        Process p(ready.dequeue());
+        std::cout << "Running Process:" << std::endl;
+        std::cout << p << std::endl;
+        p.run();
+        if (p.getStatus() == WAITING)
+        {
+            waiting.enqueue(p);
+        }
+        else if (p.getStatus() == READY)
+        {
+            ready.enqueue(p);
+        }
+        else
+        {
+            finished.insert(p);
+        }
+    }
+    catch (...)
+    {
+        std::cout << "There are no ready processes. Try to do an interrupt." << std::endl;
+    }
+}
+
+void interrupt(LinkedQueue<Process> &ready, ArrayQueue<Process> &waiting)
+{
+    try
+    {
+        Process p(waiting.dequeue());
+        p.changeStatus(READY);
+        std::cout << "Moving process to Ready:" << std::endl;
+        std::cout << p << std::endl;
+        ready.enqueue(p);
+    }
+    catch (...)
+    {
+        std::cout << "No Waiting Processes." << std::endl;
+    }
+}
+
+void listProcesses(LinkedQueue<Process> &ready, ArrayQueue<Process> &waiting, UnorderedLinkedList<Process> &finished)
+{
+    LinkedQueue readyTemp(ready);
+    ArrayQueue waitingTemp(waiting);
+    std::cout << "List of Ready Processes: " << std::endl;
+    while (!readyTemp.isEmptyQueue())
+    {
+        std::cout << std::setw(40) << "-" << std::endl;
+        std::cout << readyTemp.dequeue() << std::endl;
+        std::cout << std::setw(40) << "-" << std::endl;
+    }
+    std::cout << "List of Waiting Processes: " << std::endl;
+    while (!waitingTemp.isEmptyQueue())
+    {
+        std::cout << std::setw(40) << "-" << std::endl;
+        std::cout << waitingTemp.dequeue() << std::endl;
+        std::cout << std::setw(40) << "-" << std::endl;
+    }
+    std::cout << "List of Finished Processes: " << std::endl;
+    finished.print(std::cout, "\n");
+}
+
+void resetStream()
+{
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "You did not enter a number." << std::endl;
 }

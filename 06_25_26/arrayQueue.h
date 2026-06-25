@@ -55,6 +55,7 @@ inline ArrayQueue<t>::ArrayQueue(const ArrayQueue<t> &queueToCopy)
     count = 0;
     queueFront = maxQueueSize - 1;
     queueRear = maxQueueSize - 1;
+    list = nullptr;
     copyQueue(queueToCopy);
 }
 
