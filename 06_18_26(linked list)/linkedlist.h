@@ -54,7 +54,7 @@ LinkedList<t>::LinkedList(const LinkedList<t> &otherList)
 template <class t>
 const LinkedList<t> &LinkedList<t>::operator=(const LinkedList<t> &listToCopy)
 {
-    if (this != *listToCopy) // prevent self copy
+    if (this != &listToCopy) // prevent self copy
     {
         this->copyList(listToCopy);
     }
