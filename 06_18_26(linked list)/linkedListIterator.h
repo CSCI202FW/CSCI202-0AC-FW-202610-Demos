@@ -39,10 +39,9 @@ LinkedListIterator<t> LinkedListIterator<t>::operator++()
 {
     if (current != nullptr)
     {
-        return LinkedListIterator<t>(current->link);
+        current = current->link;
     }
-    else
-        return LinkedListIterator<t>();
+    return *this;
 }
 template <class t>
 bool LinkedListIterator<t>::operator==(const LinkedListIterator<t> &otherItr) const
