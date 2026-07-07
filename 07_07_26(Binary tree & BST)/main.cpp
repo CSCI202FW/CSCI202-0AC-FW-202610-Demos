@@ -1,6 +1,7 @@
 #include "binarySearchTree.h"
 #include <iostream>
 #include <random>
+#include <chrono>
 
 // M05 a lab
 // ask the ai engine of your choice (don't pay)
@@ -10,8 +11,12 @@
 int main()
 {
     BinarySearchTree<int> tree;
+    std::random_device rd;
     std::uniform_int_distribution<int> distribution(5, 100);
-    std::default_random_engine generator(time(0));
+    std::default_random_engine generator(rd()); // alternatively use code in block below
+    /*auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+      std::default_random_engine generator(static_cast<unsigned int>(seed));
+    */
     int num = distribution(generator);
     for (int i = 0; i < num; i++)
     {
