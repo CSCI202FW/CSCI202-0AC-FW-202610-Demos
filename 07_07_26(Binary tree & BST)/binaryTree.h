@@ -20,7 +20,7 @@ public:
     std::string preorderTraversal() const;
     std::string postorderTraversal() const;
     virtual void insert(const t &insertItem) = 0;
-    virtual bool search(const t &searchItem) = 0;
+    virtual bool search(const t &searchItem) const = 0;
     virtual void deleteNode(const t &deleteItem) = 0;
 
 protected:
@@ -39,7 +39,7 @@ private:
 };
 
 template <class t>
-inline std::string BinaryTree<t>::inorderTraversal() const
+std::string BinaryTree<t>::inorderTraversal() const
 {
     std::ostringstream out;
     inorder(root, out);
@@ -47,7 +47,7 @@ inline std::string BinaryTree<t>::inorderTraversal() const
 }
 
 template <class t>
-inline std::string BinaryTree<t>::preorderTraversal() const
+std::string BinaryTree<t>::preorderTraversal() const
 {
     std::ostringstream out;
     preorder(root, out);
@@ -55,7 +55,7 @@ inline std::string BinaryTree<t>::preorderTraversal() const
 }
 
 template <class t>
-inline std::string BinaryTree<t>::postorderTraversal() const
+std::string BinaryTree<t>::postorderTraversal() const
 {
     std::ostringstream out;
     postorder(root, out);
@@ -63,7 +63,7 @@ inline std::string BinaryTree<t>::postorderTraversal() const
 }
 
 template <class t>
-inline void BinaryTree<t>::copyTree(BinaryNode<t> *&myTreeNode, BinaryNode<t> *treeToCopyNode)
+void BinaryTree<t>::copyTree(BinaryNode<t> *&myTreeNode, BinaryNode<t> *treeToCopyNode)
 {
     if (treeToCopyNode == nullptr)
     {
@@ -78,7 +78,7 @@ inline void BinaryTree<t>::copyTree(BinaryNode<t> *&myTreeNode, BinaryNode<t> *t
 }
 
 template <class t>
-inline void BinaryTree<t>::inorder(BinaryNode<t> *currentNode, std::ostringstream &out) const
+void BinaryTree<t>::inorder(BinaryNode<t> *currentNode, std::ostringstream &out) const
 {
     /*  Traverse the left subtree
         Visit the node
@@ -92,7 +92,7 @@ inline void BinaryTree<t>::inorder(BinaryNode<t> *currentNode, std::ostringstrea
 }
 
 template <class t>
-inline void BinaryTree<t>::preorder(BinaryNode<t> *currentNode, std::ostringstream &out) const
+void BinaryTree<t>::preorder(BinaryNode<t> *currentNode, std::ostringstream &out) const
 {
     /*  Visit the node
         Traverse the left subtree
@@ -107,7 +107,7 @@ inline void BinaryTree<t>::preorder(BinaryNode<t> *currentNode, std::ostringstre
 }
 
 template <class t>
-inline void BinaryTree<t>::postorder(BinaryNode<t> *currentNode, std::ostringstream &out) const
+void BinaryTree<t>::postorder(BinaryNode<t> *currentNode, std::ostringstream &out) const
 {
     /*  Traverse the left subtree
         Traverse the right subtree
@@ -123,7 +123,7 @@ inline void BinaryTree<t>::postorder(BinaryNode<t> *currentNode, std::ostringstr
 }
 
 template <class t>
-inline void BinaryTree<t>::destroy(BinaryNode<t> *&currentNode)
+void BinaryTree<t>::destroy(BinaryNode<t> *&currentNode)
 {
     if (currentNode != nullptr)
     {
@@ -135,7 +135,7 @@ inline void BinaryTree<t>::destroy(BinaryNode<t> *&currentNode)
 }
 
 template <class t>
-inline int BinaryTree<t>::nodeCount(BinaryNode<t> *currentNode) const
+int BinaryTree<t>::nodeCount(BinaryNode<t> *currentNode) const
 {
     if (currentNode == nullptr)
     {
@@ -145,7 +145,7 @@ inline int BinaryTree<t>::nodeCount(BinaryNode<t> *currentNode) const
 }
 
 template <class t>
-inline int BinaryTree<t>::leavesCount(BinaryNode<t> *currentNode) const
+int BinaryTree<t>::leavesCount(BinaryNode<t> *currentNode) const
 {
     if (currentNode == nullptr)
         return 0;
@@ -155,7 +155,7 @@ inline int BinaryTree<t>::leavesCount(BinaryNode<t> *currentNode) const
 }
 
 template <class t>
-inline int BinaryTree<t>::height(BinaryNode<t> *currentNode) const
+int BinaryTree<t>::height(BinaryNode<t> *currentNode) const
 {
     if (currentNode == nullptr)
         return 0;
@@ -163,7 +163,7 @@ inline int BinaryTree<t>::height(BinaryNode<t> *currentNode) const
 }
 
 template <class t>
-inline int BinaryTree<t>::max(int x, int y) const
+int BinaryTree<t>::max(int x, int y) const
 {
     if (x >= y)
         return x;
@@ -172,20 +172,20 @@ inline int BinaryTree<t>::max(int x, int y) const
 }
 
 template <class t>
-inline BinaryTree<t>::BinaryTree()
+BinaryTree<t>::BinaryTree()
 {
     root = nullptr;
 }
 
 template <class t>
-inline BinaryTree<t>::BinaryTree(const BinaryTree<t> &treeToCopy)
+BinaryTree<t>::BinaryTree(const BinaryTree<t> &treeToCopy)
 {
     root = nullptr;
     copyTree(this->root, treeToCopy.root);
 }
 
 template <class t>
-inline const BinaryTree<t> &BinaryTree<t>::operator=(const BinaryTree<t> &treeToCopy)
+const BinaryTree<t> &BinaryTree<t>::operator=(const BinaryTree<t> &treeToCopy)
 {
     if (this != &treeToCopy)
     {
@@ -198,28 +198,28 @@ inline const BinaryTree<t> &BinaryTree<t>::operator=(const BinaryTree<t> &treeTo
 }
 
 template <class t>
-inline BinaryTree<t>::~BinaryTree()
+BinaryTree<t>::~BinaryTree()
 {
     destroy(root);
 }
 
 template <class t>
-inline bool BinaryTree<t>::isEmpty() const
+bool BinaryTree<t>::isEmpty() const
 {
     return root == nullptr;
 }
 template <class t>
-inline int BinaryTree<t>::treeHeight() const
+int BinaryTree<t>::treeHeight() const
 {
     return height(root);
 }
 template <class t>
-inline int BinaryTree<t>::treeNodeCount() const
+int BinaryTree<t>::treeNodeCount() const
 {
     return nodeCount(root);
 }
 template <class t>
-inline int BinaryTree<t>::treeLeavesCount() const
+int BinaryTree<t>::treeLeavesCount() const
 {
     return leavesCount(root);
 }
