@@ -142,7 +142,7 @@ inline void BinarySearchTree<t>::deleteFromTree(BinaryNode<t> *&currentNode)
         while (replace->rLink != nullptr)
         {
             replaceParent = replace;
-            replace = replace->rLink
+            replace = replace->rLink;
         }
         t tempData;
         tempData = currentNode->data;
