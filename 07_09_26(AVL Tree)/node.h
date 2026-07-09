@@ -18,7 +18,7 @@ BinaryNode<t>::BinaryNode()
 {
     lLink = nullptr;
     rLink = nullptr;
-    bfactor = 0
+    bfactor = 0;
 }
 template <class t>
 BinaryNode<t>::BinaryNode(t d) : data(d)

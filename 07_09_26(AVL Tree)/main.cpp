@@ -1,16 +1,17 @@
 #include "binarySearchTree.h"
+#include "AVLTree.h"
 #include <iostream>
 #include <random>
 #include <chrono>
 
-// M05 a lab
-// ask the ai engine of your choice (don't pay)
-//  to add a function to binary search tree
-//  that prints the binary search tree in a tree shape
+// M05 part b lab
+//  create a node for a b-tree.
 
 int main()
 {
-    BinarySearchTree<int> tree;
+    BinarySearchTree<int> tree3;
+    AVLTree<int> tree;
+    AVLTree<int> tree2;
     std::random_device rd;
     std::uniform_int_distribution<int> distribution(5, 100);
     std::default_random_engine generator(rd()); // alternatively use code in block below
@@ -22,7 +23,9 @@ int main()
     {
         try
         {
-            tree.insert(distribution(generator));
+            int x = distribution(generator);
+            tree.insert(x);
+            tree2.insert(x);
         }
         catch (const std::exception &e)
         {
@@ -36,4 +39,8 @@ int main()
     std::cout << "Tree Height: " << tree.treeHeight() << std::endl;
     std::cout << "Tree Nodes: " << tree.treeNodeCount() << std::endl;
     std::cout << "Tree Leaves: " << tree.treeLeavesCount() << std::endl;
+    auto it = tree2.begin();
+    int del = *it;
+    tree.deleteNode(del);
+    std::cout << tree.inorderTraversal() << std::endl;
 }
