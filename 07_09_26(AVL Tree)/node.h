@@ -8,6 +8,7 @@ struct BinaryNode
     BinaryNode<t> *lLink;
     BinaryNode<t> *rLink;
     int bfactor;
+
     BinaryNode();
     BinaryNode(t data);
 };
@@ -17,12 +18,14 @@ BinaryNode<t>::BinaryNode()
 {
     lLink = nullptr;
     rLink = nullptr;
+    bfactor = 0
 }
 template <class t>
 BinaryNode<t>::BinaryNode(t d) : data(d)
 {
     rLink = nullptr;
     lLink = nullptr;
+    bfactor = 0;
 }
 
 template <class t>
