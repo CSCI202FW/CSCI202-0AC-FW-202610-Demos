@@ -3,10 +3,8 @@
 #include <random>
 #include <chrono>
 
-// M05 a lab
-// ask the ai engine of your choice (don't pay)
-//  to add a function to binary search tree
-//  that prints the binary search tree in a tree shape
+// M05 part b lab
+//  create a node for a b-tree.
 
 int main()
 {
