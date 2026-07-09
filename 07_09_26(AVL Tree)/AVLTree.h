@@ -142,6 +142,34 @@ inline void AVLTree<t>::balanceFromRight(BinaryNode<t> *&currentNode)
 }
 
 template <class t>
+inline void AVLTree<t>::rotateToLeft(BinaryNode<t> *&currentNode)
+{
+    BinaryNode<t> *newRootNode;
+    if (currentNode == nullptr || currentNode->rLink == nullptr)
+    {
+        throw std::out_of_range("Cannot rotate empty node.");
+    }
+    newRootNode = currentNode->rLink;
+    currentNode->rLink = newRootNode->lLink;
+    newRootNode->lLink = currentNode;
+    currentNode = newRootNode;
+}
+
+template <class t>
+inline void AVLTree<t>::rotateToRight(BinaryNode<t> *&currentNode)
+{
+    BinaryNode<t> *newRootNode;
+    if (currentNode == nullptr || currentNode->lLink == nullptr)
+    {
+        throw std::out_of_range("Cannot rotate empty node.");
+    }
+    newRootNode = currentNode->lLink;
+    currentNode->lLink = newRootNode->rLink;
+    newRootNode->rLink = currentNode;
+    currentNode = newRootNode;
+}
+
+template <class t>
 inline void AVLTree<t>::insertIntoAVL(BinaryNode<t> *&currentNode, BinaryNode<t> *newNode, bool &isTaller, Iterator &it)
 {
     if (currentNode == nullptr)
