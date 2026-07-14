@@ -1,5 +1,6 @@
 
 #include "map.h"
+#include "donut.h"
 #include <iostream>
 #include <random>
 #include <chrono>
@@ -15,18 +16,32 @@
 int main()
 {
     Map<int, std::string> hobbits;
+    Map<std::string, Donut *> hobbitDonuts;
+
+    std::random_device rd;
+    std::uniform_int_distribution<int> icingDist(0, static_cast<int>(icingType::NOICE));
+    std::uniform_int_distribution<int> toppingDist(0, static_cast<int>(Donut::toppingType::NOTOP));
+    std::uniform_int_distribution<int> drizzleDist(0, static_cast<int>(drizzleType::NODRIZZLE));
+    std::default_random_engine generator(rd()); // alternatively use code in block below
+    /*auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+      std::default_random_engine generator(static_cast<unsigned int>(seed));
+    */
+    // int num = distribution(generator);
+
     std::ifstream name("names.txt");
     for (int i = 1; !name.eof(); i++)
     {
         std::string in;
         std::getline(name >> std::ws, in);
         hobbits.insert(i, in);
+        hobbitDonuts.insert(in, new Donut(Donut::iceToStr.at(static_cast<icingType>(icingDist(generator))), Donut::topToStr.at(static_cast<Donut::toppingType>(toppingDist(generator))), Donut::drizzleToStr.at(static_cast<drizzleType>(drizzleDist(generator)))));
     }
     for (auto it = hobbits.begin(); it != hobbits.end(); ++it)
     {
         Pair<int, std::string> p = *it;
-        std::cout << p.getValue() << std::endl;
+        std::cout << p.getValue() << " --- " << *hobbitDonuts.at(p.getValue()) << std::endl;
     }
+
     std::cout << std::endl
               << std::endl;
     std::cout << hobbits[6] << std::endl;
@@ -53,6 +68,11 @@ int main()
         std::cin >> ind;
         if (ind == -1)
         {
+            for (auto it = hobbitDonuts.begin(); it != hobbitDonuts.end(); ++it)
+            {
+                std::cout << it->getKey() << " --- " << *it->getValue() << std::endl;
+                delete it->getValue();
+            }
             break;
         }
         if (ind == -2)
@@ -61,7 +81,16 @@ int main()
             for (auto it = hobbits.begin(); it != hobbits.end(); ++it)
             {
                 Pair<int, std::string> p = *it;
-                std::cout << p.getValue() << std::endl;
+
+                std::cout << p.getValue() << " --- ";
+                try
+                {
+                    std::cout << *hobbitDonuts.at(p.getValue()) << std::endl;
+                }
+                catch (std::out_of_range e)
+                {
+                    std::cout << std::endl;
+                }
             }
         }
         else
@@ -70,8 +99,12 @@ int main()
             {
 
                 std::cout << "Deleting " << hobbits.at(ind) << "\n";
-                std::cout << hobbits.deleteItem(ind)
+                std::string n = hobbits.deleteItem(ind);
+                Donut *d = hobbitDonuts.deleteItem(n);
+                std::cout << *d << " ";
+                std::cout << n
                           << std::endl;
+                delete d;
             }
             catch (const std::out_of_range &e)
             {

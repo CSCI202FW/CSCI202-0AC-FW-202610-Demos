@@ -19,6 +19,7 @@ public:
         Pair<k, v> operator*();
         bool operator==(const Iterator oth) const;
         bool operator!=(const Iterator oth) const;
+        Pair<k, v> *operator->();
 
     private:
         AVLTree<Pair<k, v>>::Iterator it;
@@ -27,7 +28,7 @@ public:
     Pair<bool, Iterator> insert(const k &, const v &);
     Iterator begin() { return Iterator(tree.begin()); };
     Iterator end() { return Iterator(tree.end()); };
-    bool deleteItem(const k &key);
+    v deleteItem(const k &key);
     std::string preorder();
 
 protected:
@@ -48,7 +49,7 @@ v Map<k, v>::at(const k &key) const
     {
         throw std::out_of_range("The item is not in the map.");
     }
-    return (*item).getValue();
+    return item->getValue();
 }
 
 template <class k, class v>
@@ -59,9 +60,9 @@ v &Map<k, v>::operator[](const k &key)
     if (item == tree.end())
     {
         typename AVLTree<Pair<k, v>>::Iterator it = tree.insertAVL(pairforComp);
-        return (*it).getValue();
+        return it->getValue();
     }
-    return (*item).getValue();
+    return item->getValue();
 }
 
 template <class k, class v>
@@ -83,11 +84,13 @@ Pair<bool, typename Map<k, v>::Iterator> Map<k, v>::insert(const k &key, const v
 }
 
 template <class k, class v>
-bool Map<k, v>::deleteItem(const k &key)
+v Map<k, v>::deleteItem(const k &key)
 {
     Pair<k, v> deleteItem(key);
+    auto it = tree.find(deleteItem);
+    v cpy = it->getValue();
     tree.deleteNode(deleteItem);
-    return tree.isBalanced();
+    return cpy;
 }
 
 template <class k, class v>
@@ -106,6 +109,11 @@ template <class k, class v>
 Pair<k, v> Map<k, v>::Iterator::operator*()
 {
     return *it;
+}
+template <class k, class v>
+Pair<k, v> *Map<k, v>::Iterator::operator->()
+{
+    return it.operator->();
 }
 
 template <class k, class v>

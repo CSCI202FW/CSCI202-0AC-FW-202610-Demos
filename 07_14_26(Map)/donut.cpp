@@ -62,7 +62,7 @@ void Donut::setDrizzle(std::string driz)
 std::string Donut::toString() const
 {
     std::string out;
-    out = "Icing: " + iceToStr.at(icing) + " Topping: " + topToStr.at(topping) + " Drizzle: " + drizzleToStr.at(drizzle);
+    out = "Icing: " + iceToStr.at(icing) + ", Topping: " + topToStr.at(topping) + ", Drizzle: " + drizzleToStr.at(drizzle);
     return out;
 }
 
