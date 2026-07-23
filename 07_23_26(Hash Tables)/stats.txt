@@ -57,3 +57,13 @@ There were 3951 items inserted.
 clustered values 10007 size hash table mid-square
 There were 1121 collisions.
 There were 3879 items inserted.
+----------------------------------------------------
+Uniform values 10007 size hash table modulus with linear probing
+There were 1273 collisions.
+There were 5000 items inserted.
+There were 2533 linear probes done.
+----------------------------------------------------
+clustered values 10007 size hash table modulus with linear probing
+There were 4194 collisions.
+There were 5000 items inserted.
+There were 8758390 linear probes done.

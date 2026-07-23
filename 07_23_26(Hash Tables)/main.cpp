@@ -24,6 +24,7 @@ int main()
     int ht[HT_SIZE] = {0};
     int collisions = 0;
     int count = 0;
+    unsigned long probeCount = 0;
 
     while (!in.eof())
     {
@@ -40,10 +41,38 @@ int main()
         {
             std::cout << num << " collided with " << ht[hashValue] << std::endl;
             collisions++;
+            bool found = false;
+            int pCount = 0;
+            int i = 1;
+            while (ht[hashValue] != 0 && !found)
+            {
+                if (ht[hashValue] == num)
+                {
+                    found = true;
+                }
+                else
+                {
+                    hashValue = (hashValue + i) % HT_SIZE;
+                    probeCount++;
+                    pCount++;
+                }
+            }
+            if (found)
+            {
+                collisions--;
+                probeCount -= pCount;
+                std::cout << "Duplicates are not allowed" << std::endl;
+            }
+            else
+            {
+                ht[hashValue] = num;
+                count++;
+            }
         }
     }
     std::cout << "There were " << collisions << " collisions." << std::endl;
     std::cout << "There were " << count << " items inserted." << std::endl;
+    std::cout << "There were " << probeCount << " linear probes done." << std::endl;
 }
 
 void setup()
@@ -83,7 +112,7 @@ int hash(int key)
 {
     // return hashing_multiplication(key);
     // return folding(key, 2);
-    return hashing_midsquare(key, 5);
+    // return hashing_midsquare(key, 5);
     return key % HT_SIZE;
 }
 
