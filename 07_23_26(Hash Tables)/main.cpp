@@ -30,7 +30,7 @@ int main()
     {
         int num;
         in >> num;
-        int hashValue = hashing_multiplication(num);
+        int hashValue = hash(num);
         if (ht[hashValue] == 0)
         {
             ht[hashValue] = num;
@@ -44,13 +44,13 @@ int main()
             bool found = false;
             int pCount = 0;
             int i = 1;
-            while (ht[hashValue] != 0 && !found)
+            while (ht[hashValue] != 0 && !found && pCount < HT_SIZE / 2)
             {
                 if (ht[hashValue] == num)
                 {
                     found = true;
                 }
-                else if (pCount == 0)
+                /* else if (pCount == 0)
                 {
                     hashValue = hashing_midsquare(num, 5);
                     probeCount++;
@@ -61,12 +61,13 @@ int main()
                     hashValue = hash(num);
                     probeCount++;
                     pCount++;
-                }
+                } */
                 else
                 {
-                    hashValue = (hashValue + i) % HT_SIZE;
+                    hashValue = (hashValue + i * i) % HT_SIZE;
                     probeCount++;
                     pCount++;
+                    i++;
                 }
             }
             if (found)
@@ -75,7 +76,7 @@ int main()
                 probeCount -= pCount;
                 std::cout << "Duplicates are not allowed" << std::endl;
             }
-            else
+            else if (ht[hashValue] == 0)
             {
                 ht[hashValue] = num;
                 count++;
@@ -85,6 +86,7 @@ int main()
     std::cout << "There were " << collisions << " collisions." << std::endl;
     std::cout << "There were " << count << " items inserted." << std::endl;
     std::cout << "There were " << probeCount << " linear probes done." << std::endl;
+    std::cout << "There were " << static_cast<double>(probeCount) / collisions << " average probes per collision." << std::endl;
 }
 
 void setup()
@@ -98,8 +100,8 @@ void setup()
     while (randomData.size() < 5000)
     {
         int num = 0;
-        num = distribution2(generator) * 100000 + distribution(generator);
-        // num = distribution3(generator);
+        // num = distribution2(generator) * 100000 + distribution(generator);
+        num = distribution3(generator);
         randomData.insert(num);
     }
     bool begin = true;
@@ -122,9 +124,9 @@ void setup()
 
 int hash(int key)
 {
-    // return hashing_multiplication(key);
+    return hashing_multiplication(key);
     // return folding(key, 2);
-    // return hashing_midsquare(key, 5);
+    return hashing_midsquare(key, 5);
     return key % HT_SIZE;
 }
 
