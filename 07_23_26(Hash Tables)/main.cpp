@@ -30,7 +30,7 @@ int main()
     {
         int num;
         in >> num;
-        int hashValue = hashing_multiplication(num, 5);
+        int hashValue = hashing_multiplication(num);
         if (ht[hashValue] == 0)
         {
             ht[hashValue] = num;
