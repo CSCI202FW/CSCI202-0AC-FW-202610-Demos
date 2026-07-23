@@ -7,6 +7,7 @@
 #include <vector>
 #include <functional>
 #include <random>
+#include "person.h"
 
 // M07 lab-b implement Universal Hashing #6 from https://www.geeksforgeeks.org/dsa/hash-functions-and-list-types-of-hash-functions/
 // rerun both experiments
@@ -17,6 +18,7 @@ int hash(int key);
 int hashing_midsquare(long key, int size);
 int hashing_multiplication(int key);
 int folding(int key, int segments);
+int doubleHash(int key);
 int main()
 {
     setup();
@@ -64,7 +66,7 @@ int main()
                 } */
                 else
                 {
-                    hashValue = (hashValue + i * i) % HT_SIZE;
+                    hashValue = (hashValue + i * doubleHash(num)) % HT_SIZE;
                     probeCount++;
                     pCount++;
                     i++;
@@ -87,6 +89,39 @@ int main()
     std::cout << "There were " << count << " items inserted." << std::endl;
     std::cout << "There were " << probeCount << " linear probes done." << std::endl;
     std::cout << "There were " << static_cast<double>(probeCount) / collisions << " average probes per collision." << std::endl;
+    int search = 200934;
+    int hashValue = hash(search);
+    bool found = false;
+    if (ht[hashValue] == search)
+    {
+        found = true;
+    }
+    int i = 1;
+    int pCount = 0;
+    while (!found)
+    {
+        hashValue = (hashValue + i * doubleHash(search)) % HT_SIZE;
+        i++;
+        pCount++;
+        if (ht[hashValue] == search)
+        {
+            found = true;
+        }
+    }
+
+    std::cout << "Found " << search << " at " << hashValue << " hash value " << hash(search) << std::endl;
+    std::cout << "It took " << pCount << " probes to find the value" << std::endl;
+    Person **people = new Person *[13];
+    Person james("james", 28);
+    Person semaj("semaj", 28);
+    int jamesHash = james.hash();
+    int semajHash = semaj.hash();
+    jamesHash = jamesHash % 13;
+    semajHash = semajHash % 13;
+    people[jamesHash] = &james;
+    people[semajHash] = &semaj;
+
+    delete[] people;
 }
 
 void setup()
@@ -100,8 +135,8 @@ void setup()
     while (randomData.size() < 5000)
     {
         int num = 0;
-        // num = distribution2(generator) * 100000 + distribution(generator);
-        num = distribution3(generator);
+        num = distribution2(generator) * 100000 + distribution(generator);
+        // num = distribution3(generator);
         randomData.insert(num);
     }
     bool begin = true;
@@ -124,9 +159,9 @@ void setup()
 
 int hash(int key)
 {
-    return hashing_multiplication(key);
-    // return folding(key, 2);
-    return hashing_midsquare(key, 5);
+    // return hashing_multiplication(key);
+    //  return folding(key, 2);
+    // return hashing_midsquare(key, 5);
     return key % HT_SIZE;
 }
 
@@ -171,4 +206,9 @@ int folding(int key, int segments)
         i = i + segLen;
     }
     return fold % HT_SIZE;
+}
+
+int doubleHash(int key)
+{
+    return 1 + (key % (HT_SIZE - 2));
 }
