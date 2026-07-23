@@ -67,3 +67,33 @@ clustered values 10007 size hash table modulus with linear probing
 There were 4194 collisions.
 There were 5000 items inserted.
 There were 8758390 linear probes done.
+----------------------------------------------------
+Uniform values 10007 size hash table rehashing
+There were 1257 collisions.
+There were 5000 items inserted.
+There were 1965 linear probes done.
+----------------------------------------------------
+clustered values 10007 size hash table rehashing
+There were 977 collisions.
+There were 5000 items inserted.
+There were 1698 linear probes done.
+----------------------------------------------------
+clustered values 10007 size hash table multiplication with linear probing
+There were 927 collisions.
+There were 5000 items inserted.
+There were 1306 linear probes done.
+----------------------------------------------------
+Uniform values 10007 size hash table multiplication with linear probing
+There were 1261 collisions.
+There were 5000 items inserted.
+There were 2462 linear probes done.
+----------------------------------------------------
+Uniform values 10007 size hash table mid-square with linear probing
+There were 1220 collisions.
+There were 5000 items inserted.
+There were 2429 linear probes done.
+----------------------------------------------------
+clustered values 10007 size hash table mid-square with linear probing
+There were 1321 collisions.
+There were 5000 items inserted.
+There were 3094 linear probes done.

@@ -30,7 +30,7 @@ int main()
     {
         int num;
         in >> num;
-        int hashValue = hash(num);
+        int hashValue = hashing_multiplication(num, 5);
         if (ht[hashValue] == 0)
         {
             ht[hashValue] = num;
@@ -49,6 +49,18 @@ int main()
                 if (ht[hashValue] == num)
                 {
                     found = true;
+                }
+                else if (pCount == 0)
+                {
+                    hashValue = hashing_midsquare(num, 5);
+                    probeCount++;
+                    pCount++;
+                }
+                else if (pCount == 1)
+                {
+                    hashValue = hash(num);
+                    probeCount++;
+                    pCount++;
                 }
                 else
                 {
